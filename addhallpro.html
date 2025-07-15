@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Venue</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <h2>Add Venue</h2>
+  <form id="venueForm">
+    <input type="text" id="name" placeholder="Venue Name" required><br>
+    <input type="number" id="capacity" placeholder="Capacity" required><br>
+    <button type="submit">Add Venue</button>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    document.getElementById('venueForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        capacity: parseInt(document.getElementById('capacity').value)
+      };
+
+      try {
+        const res = await fetch('http://localhost:3000/venues', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        document.getElementById('message').textContent = res.ok ? '✅ Venue added!' : '❌ Failed to add venue';
+      } catch (err) {
+        document.getElementById('message').textContent = '❌ Error: ' + err;
+      }
+    });
+  </script>
+</body>
+</html>
